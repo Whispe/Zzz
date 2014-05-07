@@ -1,0 +1,110 @@
+Tifany Yung
+tyung1@jhu.edu
+Declarative Methods HW 4
+May 2, 2014
+
+Note: SoPlex 2.0.0 solver on personal computer was used, not the Clp trunk solver on ugrad.
+Note: SCIP 3.1.0 on personal computer was used, not version 1.2.0 on ugrad.
+
+
+PROBLEM 1
+=========
+Optimal solution found
+-----------------------------------------------------------------
+objective value:                                 6600
+send$alice#2                                      200 	(obj:8)
+send$alice#3                                      300 	(obj:5)
+send$bob#2                                        200 	(obj:5)
+send$bob#4                                        100 	(obj:3)
+send$carol#1                                      200 	(obj:11)
+-----------------------------------------------------------------
+a) The minimum transportation cost is 6600.
+b) Carol is not operating at full capacity; she has a supply capacity of 400 units but is only supplying 200.
+c) Consumer #2 is using multiple suppliers.
+d) The most expensive transportation route used is from Carol to consumer #1, with a cost of 11/unit.
+e) The LP solver required seven iterations.
+f) Consumer #2 only demands up to 400 units, so even though Alice can supply 500, Consumer #2 will accept no more than 400.
+   Bob can only supply up to 300 units, so even though Consumer #2 demands more, Bob is unable to supply any more.
+g) The optimal solution found assigns negative values to some variables.
+   In fact, the solver assigned the most negative possible number, -10000, to as many variables as possible.
+   Therefore, the solution contains many negative values and several assignments of large, positive values.
+   This occurs since assigning negative values produces negative costs, which are smaller than any positive cost, and the solver is attempting to minimize cost.
+   ----------------------------------------------------------------------
+   objective value:                               -83400
+   send$alice#1                                   -10000 	(obj:10)
+   send$alice#2                                      200 	(obj:8)
+   send$alice#3                                    20300 	(obj:5)
+   send$alice#4                                   -10000 	(obj:9)
+   send$bob#1                                     -10000 	(obj:7)
+   send$bob#2                                      10200 	(obj:5)
+   send$bob#3                                     -10000 	(obj:5)
+   send$bob#4                                      10100 	(obj:3)
+   send$carol#1                                    20200 	(obj:11)
+   send$carol#2                                   -10000 	(obj:10)
+   send$carol#3                                   -10000 	(obj:8)
+   ----------------------------------------------------------------------
+   This solution allows negative numbers of units to be supplied to the consumers.
+
+
+PROBLEM 2
+=========
+a) Please see knapsack.zpl.
+b) This program solves the 10,000-item problem in 1.60 seconds.
+c) The objective function represents the total value of the items taken.
+   The optimal assignment represents the items that should be taken to maximize the total value taken while still being able to hold everything in the knapsack.
+d) Please see sol1 and sol2.
+   --------------------------------------------------------------------------------
+   objective value:                             17785767
+           objective value:                     17785770.5842697
+   take$item0947                                       1 	(obj:983)
+           take$item3730                                       1 	(obj:1627)
+   take$item6043                                       1 	(obj:756)
+           take$item6456                       0.730337078651685 	(obj:3365)
+   take$item9084                                       1 	(obj:2342)
+   --------------------------------------------------------------------------------
+   i. sol1 packed items 947, 6043, 9084, while sol2 packed item 3730 and a fraction of item 6456. sol2 is packing the knapsack with a fraction of an item since that fraction of an item is worth more than a different, whole item.
+   ii. All but one of the 10,000 variables turned out to be integers.
+   iii. The value-to-weight ratio of items taken in the non-integer case should be higher. Therefore, even a fraction of the higher-value items is worth more than a whole item of lower value-to-weight ratio. sol2 takes some items with higher value-to-weight ratio that would not have fit as a whole into the knapsack without causing it to overflow. Since sol2 does not require integers, fractions of more valuable items can be taken.
+   iv. This property of sol2 makes sol2 more efficient but less practical than sol1 since it is not always possible to detach a fraction of an item.
+e) Please see knapsack.zpl.
+   count = 3695,
+   totalvalue = 17785767,
+   spareweight = 0.
+f) The solver appears to do the same thing each time after newstart and opt are used. However, the solver statistics for the second time were not the same as the first time since the solver can take different amounts of time to solve depending on what other processes are running on the machine at the same time that affect memory usage. Additionally, there is some natural variance in the time it takes for the solver to solve the problem. The count, totalvalue, and spareweight variables' values were the same since they are the optimal solution, so the solver should not replace them with less optimal solutions if the program is run again. The variables' values also cannot become more optimal since that means that the first solution was not optimal with respect to the objective and should not have been returned by the solver.
+g) The new objective is (sum <i> in I: value[i]*take[i]) - count. This did not affect the values of the variables.
+h) The KNAPSACK solver can simply solve the problem several times and take the solution with the lowest count that still achieves the maximum value.
+i) SCIP takes 5.34 seconds to solve this problem.
+   count = 3544,
+   totalvalue = 14775050,
+   spareweight = 0.
+   The number of items and the total value of those items decreased since some of the items with higher values also have higher radioactivities. However, the spare weight of the sack remains 0 since the solver still can find lower-value and less-radioactive items to fill in the space.
+j) Please see knapsack.zpl.
+
+
+PROBLEM 3
+=========
+a) set Day := {1..7};
+b) Let 10 hours of work, 7 hours of sleep, and 3 hours of play per day be required.
+c) In any 3-day period, 18 hours of sleep are required. For the 3-day periods partially contained within the week, let there be no constraint since there will always be one day outside of the week during which 18 hours of sleep can be obtained. For example, if only two days in the 3-day period are within the week, there can be 0 hours of sleep in those two days and 18 hours of sleep on the day outside of the week; even though this is probably inefficient, it is still viable and doesn't break the 3-day, 18-hours constraint.
+d) Please see events.txt. If the event's fun rate is lower than base_fun_rate, the solver will choose a normal hour of play instead of the event.
+e) Please see assignments.txt. If some parts of an assignment are worth more than others, the parts can be encoded as separate assignments with the same due date but their own numbers of hours required and penalty rates.
+f) 
+
+
+PROBLEM 4
+=========
+a) Please see sudoku1.zpl.
+   The decoded solution is:
+      3 7 9 | 5 4 6 | 1 8 2 
+      4 1 8 | 3 9 2 | 5 6 7 
+      2 5 6 | 8 1 7 | 4 3 9 
+      ------+-------+-------
+      1 4 2 | 6 3 5 | 9 7 8 
+      9 6 3 | 1 7 8 | 2 4 5 
+      5 8 7 | 9 2 4 | 6 1 3 
+      ------+-------+-------
+      7 9 1 | 4 5 3 | 8 2 6 
+      8 2 5 | 7 6 1 | 3 9 4 
+      6 3 4 | 2 8 9 | 7 5 1 
+b) Please see sudoku2.zpl. It is not possible to have a valid 9x9, 180-degree rotationally symmetric sudoku since that would require multiple violations of the rule that a digit appear only once per block. For example, the top left corner and the bottom right corner of the center block must be equal to be 180-degree rotationally symmetric, but that would mean that the same digit appears in both of those locations, which are both in the same block.
+c) 

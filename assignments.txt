@@ -1,0 +1,3 @@
+declarative_hw_4 5 30 2
+machine_learning_hw_6 4 35 3
+algorithms_hw_11 2 15 2
