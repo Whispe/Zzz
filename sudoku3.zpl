@@ -22,5 +22,5 @@ subto block: forall <br,bc,d> in B*D: (sum<roff,coff> in B: x[(br-1)*n+roff, (bc
 set Givens := { read "sudoku.txt" as "<1n,2n,3n>" comment "#" };
 #subto rotsymm: forall <r,c,d> in R*C*D: x[r,c,d] == x[dim-r+1,dim-c+1,d];
 subto notequal: forall <r,c,d> in R*C*D: vif x[r,c,d] != x[dim-r+1,dim-c+1,d] then notrotequal[r,c,d] == 1 end;
-subto no_permute_digits: x[1,1,1] == 1 and x[1,2,2] == 1 and x[1,3,3] == 1 and x[1,4,4] == 1 and x[1,5,5] == 1 and x[1,6,6] == 1 and x[1,7,7] == 1 and x[1,8,8] == 1 and x[1,9,9] == 1;
+subto no_permute_digits: forall <c> in C: x[1,c,c] == 1;
 minimize notrotequal: sum<r,c,d> in R*C*D: notrotequal[r,c,d];
