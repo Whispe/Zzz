@@ -83,8 +83,6 @@ j) Please see knapsack.zpl.
 
 PROBLEM 3
 =========
-a) set Day := {1..7};
-b) Let 10 hours of work, 7 hours of sleep, and 3 hours of play per day be required.
 c) In any 3-day period, 18 hours of sleep are required. For the 3-day periods partially contained within the week, let there be no constraint since there will always be one day outside of the week during which 18 hours of sleep can be obtained. For example, if only two days in the 3-day period are within the week, there can be 0 hours of sleep in those two days and 18 hours of sleep on the day outside of the week; even though this is probably inefficient, it is still viable and doesn't break the 3-day, 18-hours constraint.
 d) Please see events.txt. If the event's fun rate is lower than base_fun_rate, the solver will choose a normal hour of play instead of the event.
 e) Please see assignments.txt. If some parts of an assignment are worth more than others, the parts can be encoded as separate assignments with the same due date but their own numbers of hours required and penalty rates.
