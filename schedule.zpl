@@ -38,7 +38,7 @@ var hoursskipped[A];
 var workrate[Day];
 var workperday[Day*A]; # Number of hours per day working on a particular assignment.
 subto noextrawork: forall <a> in A: sum <d> in Day: workperday[d,a] <= ahours[a];
-subto nolatework: forall <d,a> in Day*A: if d>adeadline[a] then workperday[d,a] == 0 end;
+subto nolatework: forall <d,a> in Day*A: if d>adeadline[a] then workperday[d,a] == 0 else 0==0 end;
 subto calcsleepyworkrate: forall <d> in Day: workrate[d] == (1-sleepy[d]) + sleepy[d]*sleepy_work_rate;
 subto calchoursdone: forall <a> in A: hoursdone[a] == sum <d> in Day: workrate[d] * workperday[d,a];
 subto calchoursskipped: forall <a> in A: hoursskipped[a] == ahours[a] - hoursdone[a];
